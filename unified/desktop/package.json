@@ -1,0 +1,115 @@
+{
+  "name": "resume-toolkit-desktop",
+  "version": "1.0.0",
+  "description": "通用简历整理工具 - 桌面版 | Universal Resume Organizer Desktop App",
+  "main": "dist/main.js",
+  "author": "Liman",
+  "license": "MIT",
+  "homepage": "https://github.com/Liman-fully/resume-toolkit",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Liman-fully/resume-toolkit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Liman-fully/resume-toolkit/issues"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && electron-builder",
+    "build:win": "vite build && electron-builder --win",
+    "build:mac": "vite build && electron-builder --mac",
+    "build:linux": "vite build && electron-builder --linux",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
+    "format": "prettier --write src/"
+  },
+  "build": {
+    "appId": "com.resumetoolkit.app",
+    "productName": "简历整理工具",
+    "copyright": "Copyright © 2024 Liman",
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/**/*",
+      "assets/**/*"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/pdf-parse/**/*",
+      "node_modules/tesseract.js/**/*",
+      "node_modules/jsdom/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64", "ia32"]
+        }
+      ],
+      "icon": "assets/icons/icon.ico",
+      "artifactName": "${productName}-${version}-setup.${ext}"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "assets/icons/icon.icns",
+      "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "linux": {
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "assets/icons/icon.png",
+      "category": "Utility",
+      "artifactName": "${productName}-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "assets/icons/icon.ico",
+      "uninstallerIcon": "assets/icons/icon.ico",
+      "installerHeaderIcon": "assets/icons/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "简历整理工具"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "Liman-fully",
+      "repo": "resume-toolkit"
+    }
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "pdf-parse": "^1.1.1",
+    "tesseract.js": "^5.0.0",
+    "jsdom": "^24.0.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "vite": "^5.0.0",
+    "vite-plugin-electron": "^0.28.0",
+    "vite-plugin-electron-renderer": "^0.14.0",
+    "electron": "^30.0.0",
+    "electron-builder": "^24.0.0",
+    "electron-updater": "^6.1.0",
+    "javascript-obfuscator": "^4.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.22.0",
+    "prettier": "^3.2.0"
+  }
+}
