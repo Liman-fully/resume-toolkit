@@ -2,7 +2,7 @@
   "name": "resume-toolkit-desktop",
   "version": "1.0.0",
   "description": "通用简历整理工具 - 桌面版 | Universal Resume Organizer Desktop App",
-  "main": "dist/main.js",
+  "main": "dist/main/index.js",
   "author": "Liman",
   "license": "MIT",
   "homepage": "https://github.com/Liman-fully/resume-toolkit",
