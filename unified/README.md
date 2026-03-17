@@ -2,7 +2,9 @@
 
 # 📄 简历整理工具
 
-**Universal Resume Organizer - Desktop App**
+**Universal Resume Organizer - Desktop Application**
+
+> ⚠️ **重要说明：这是一个桌面应用程序，不是 Web 产品。下载安装包后双击即可运行，无需浏览器或网络连接。**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![GitHub Release](https://img.shields.io/github/v/release/Liman-fully/resume-toolkit)](https://github.com/Liman-fully/resume-toolkit/releases)
@@ -16,7 +18,9 @@
 
 ## 🎯 产品介绍
 
-简历整理工具是一款**通用的简历管理软件**，帮助你快速整理散落在电脑各处的简历文件，支持 PDF、Word、图片、网页等多种格式。
+简历整理工具是一款**通用的桌面简历管理软件**，帮助你快速整理散落在电脑各处的简历文件，支持 PDF、Word、图片、网页等多种格式。
+
+> 💡 **什么是桌面应用？** 桌面应用是直接安装在你的电脑上运行的软件，不需要浏览器，不需要网络连接，双击图标即可使用。类似于 Word、Excel 等办公软件。
 
 ### 核心功能
 
@@ -27,7 +31,7 @@
 | 🔄 **自动去重** | MD5 哈希识别重复文件，保留最优版本 |
 | 📁 **智能归类** | 半固定分类体系 + 用户自定义扩展 |
 | ✏️ **统一重命名** | 自动重命名为 `职位-姓名-学历-年龄-城市.pdf` |
-| 🎨 **友好界面** | 现代化 UI，实时显示处理进度 |
+| 🎨 **桌面应用** | 原生桌面应用，无需浏览器，双击运行 |
 
 ### 适用场景
 
@@ -81,20 +85,22 @@
 2. 下载对应平台的安装包
 3. 双击运行，无需配置环境
 
-### 方式二：命令行使用
+### 方式二：开发者模式（如需修改源码）
+
+> 普通用户请直接下载安装包使用，无需执行以下步骤。
 
 ```bash
-# 克隆仓库
+# 克隆仓库（仅限开发者）
 git clone https://github.com/Liman-fully/resume-toolkit.git
 cd resume-toolkit/unified/desktop
 
 # 安装依赖
 npm install
 
-# 开发模式
+# 开发调试
 npm run dev
 
-# 打包所有平台
+# 打包应用
 npm run build
 
 # 打包单个平台
