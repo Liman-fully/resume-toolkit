@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>简历整理工具</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📄 简历整理工具</h1>
+
+        <div class="card">
+            <h2>设置路径</h2>
+            <div class="form-group">
+                <label for="sourceDir">源目录（包含所有简历的文件夹）：</label>
+                <input type="text" id="sourceDir" placeholder="例如: /Users/xxx/Desktop/简历">
+            </div>
+            <div class="form-group">
+                <label for="targetDir">目标目录（整理后的简历存放位置）：</label>
+                <input type="text" id="targetDir" placeholder="例如: /Users/xxx/Desktop/整理后的简历">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>操作选项</h2>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="dryRun" checked>
+                    预览模式（不实际移动/删除文件）
+                </label>
+            </div>
+            <div class="buttons">
+                <button onclick="preview()" class="btn btn-primary">👀 预览</button>
+                <button onclick="execute()" class="btn btn-danger">⚡ 执行</button>
+            </div>
+        </div>
+
+        <div class="card" id="resultCard" style="display: none;">
+            <h2>📊 结果</h2>
+            <pre id="resultText"></pre>
+        </div>
+
+        <div class="card">
+            <h2>分类管理</h2>
+            <div class="form-group">
+                <input type="text" id="newCategory" placeholder="新分类名称">
+                <input type="text" id="newKeywords" placeholder="关键词（逗号分隔）">
+                <button onclick="addCategory()" class="btn btn-secondary">➕ 添加分类</button>
+            </div>
+            <div id="categoriesList"></div>
+        </div>
+    </div>
+
+    <script>
+        // 加载分类
+        async function loadCategories() {
+            const res = await fetch('/api/config/categories');
+            const data = await res.json();
+            if (data.success) {
+                const list = document.getElementById('categoriesList');
+                list.innerHTML = '';
+                for (const [category, keywords] of Object.entries(data.categories)) {
+                    list.innerHTML += `<div><strong>${category}:</strong> ${keywords.join(', ')}</div>`;
+                }
+            }
+        }
+
+        // 添加分类
+        async function addCategory() {
+            const category = document.getElementById('newCategory').value;
+            const keywords = document.getElementById('newKeywords').value.split(',').map(k => k.trim()).filter(k => k);
+
+            if (!category || keywords.length === 0) {
+                alert('请填写分类名称和关键词');
+                return;
+            }
+
+            const res = await fetch('/api/config/categories', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ category, keywords })
+            });
+            const data = await res.json();
+            if (data.success) {
+                alert(data.message);
+                loadCategories();
+                document.getElementById('newCategory').value = '';
+                document.getElementById('newKeywords').value = '';
+            } else {
+                alert('错误: ' + data.error);
+            }
+        }
+
+        // 预览或执行
+        async function run(shouldExecute) {
+            const sourceDir = document.getElementById('sourceDir').value;
+            const targetDir = document.getElementById('targetDir').value;
+            const dryRun = document.getElementById('dryRun').checked;
+
+            if (!sourceDir || !targetDir) {
+                alert('请填写源目录和目标目录');
+                return;
+            }
+
+            const res = await fetch('/api/organize', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    source_dir: sourceDir,
+                    target_dir: targetDir,
+                    dry_run: dryRun && !shouldExecute
+                })
+            });
+            const data = await res.json();
+
+            const resultCard = document.getElementById('resultCard');
+            const resultText = document.getElementById('resultText');
+
+            if (data.success) {
+                resultCard.style.display = 'block';
+                resultText.textContent = data.summary + '\n\n详细统计：\n' + JSON.stringify(data.details, null, 2);
+            } else {
+                resultCard.style.display = 'block';
+                resultText.textContent = '错误: ' + data.error;
+            }
+        }
+
+        function preview() {
+            run(false);
+        }
+
+        function execute() {
+            if (!confirm('确定要执行整理操作吗？此操作会移动/删除文件。')) {
+                return;
+            }
+            run(true);
+        }
+
+        // 页面加载时加载分类
+        loadCategories();
+    </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+venv2/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Test
+.pytest_cache/
+.coverage
+
+# Web
+*.log
+
+# User config (本地配置，不提交)
+.resume-toolkit/
